@@ -1,5 +1,5 @@
 'use strict'
-// const Phaser = require('./phaser.min')
+const Phaser = require('./phaser.min')
 
 const config = {
   type: Phaser.AUTO,

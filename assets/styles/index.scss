@@ -10,3 +10,31 @@ body {
 canvas {
   background-color: $gameboard-color;
 }
+
+nav {
+  background-color: black;
+  height: 42px;
+}
+
+h1 {
+  color: white;
+  display: inline;
+  font-size: 28px;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+button {
+  margin-top: 4px;
+  // padding: 5px;
+}
+
+.nav-header {
+  margin-top: 4px;
+  float: left;
+}
+
+.nav-buttons {
+  float: right;
+  margin-right: 4px;
+}
