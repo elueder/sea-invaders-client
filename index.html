@@ -17,11 +17,20 @@
 
       <script>
 
-      const game = new Phaser.Game(480, 320, Phaser.AUTO, 'gameBoard', {
-        preload: preload,
-        create: create,
-        update: update
-      })
+      const config = {
+        type: Phaser.AUTO,
+        width: 480,
+        height: 320,
+        id: 'gameBoard',
+        transparent: true,
+        state: {
+          preload: preload,
+          create: create,
+          update: update
+        }
+      }
+
+      const game = new Phaser.Game(config)
 
       let player
 
@@ -34,7 +43,6 @@
         game.scale.scaleMode = Phaser.ScaleManager.NO_SCALE
         game.scale.pageAlignHorizontally = true
         game.scale.pageAlignVertically = true
-        game.stage.backgroundColor = '#b8c4d6'
         game.load.image('player', 'img/cuttlefishsmallicon.png')
         game.load.image('attacker', 'img/eel.png')
       }
