@@ -1,17 +1,65 @@
 <!DOCTYPE html>
 <html>
     <head>
-      <title>Example</title>
+      <title>Sea Invaders</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
       <!-- Do not add `link` tags-->
       <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
       <!-- Do not add `script` tags-->
+      <script src="./assets/scripts/phaser.min.js" type="text/javascript"></script>
       <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
       <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
     </head>
     <body>
-      <h1>Browser Template</h1>
+      <h1>Sea Invaders</h1>
+
+      <script>
+
+      const game = new Phaser.Game(480, 320, Phaser.AUTO, 'gameBoard', {
+        preload: preload,
+        create: create,
+        update: update
+      })
+
+      let player
+
+      let attacker
+
+      let key1
+      let key2
+
+      function preload () {
+        game.scale.scaleMode = Phaser.ScaleManager.NO_SCALE
+        game.scale.pageAlignHorizontally = true
+        game.scale.pageAlignVertically = true
+        game.stage.backgroundColor = '#b8c4d6'
+        game.load.image('player', 'img/cuttlefishsmallicon.png')
+        game.load.image('attacker', 'img/eel.png')
+      }
+
+      function create () {
+        game.physics.startSystem(Phaser.Physics.ARCADE)
+        // add player
+        player = game.add.sprite(game.world.width*0.5, game.world.height-30, 'player')
+        player.anchor.set(0.5)
+        game.physics.enable(player, Phaser.Physics.ARCADE)
+        player.body.immovable = true
+
+        // add key controls to player
+        key1 = game.input.keyboard.addKey(Phaser.Keyboard.LEFT)
+        key2 = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT)
+      }
+
+      function update () {
+        if (key1.isDown) {
+          player.x -= 2
+        } else if (key2.isDown) {
+          player.x +=2
+        }
+      }
+
+      </script>
     </body>
 </html>
