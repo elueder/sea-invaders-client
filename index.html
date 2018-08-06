@@ -46,6 +46,7 @@
         player.anchor.set(0.5)
         game.physics.enable(player, Phaser.Physics.ARCADE)
         player.body.immovable = true
+        player.body.collideWorldBounds = true
 
         // add key controls to player
         key1 = game.input.keyboard.addKey(Phaser.Keyboard.LEFT)
