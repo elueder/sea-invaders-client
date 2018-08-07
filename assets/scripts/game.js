@@ -14,7 +14,7 @@ const playerHeight = 14
 const playerWidth = 16
 let playerX = (canvas.width - playerWidth) / 2
 const playerImg = new Image()
-playerImg.src = 'img/cuttlefishsmallicon.png'
+playerImg.src = 'public/img/cuttlefishsmallicon.png'
 
 // set default values for actions
 let rightPressed
