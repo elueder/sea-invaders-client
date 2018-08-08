@@ -30,14 +30,18 @@ const attackerVerticalPadding = 5
 const attackerSpeed = 4
 const attackerArrWidth = (attackerColumns * (attackerWidth + attackerHorizontalPadding))
 const attackerArrHeight = (attackerRows * (attackerHeight + attackerVerticalPadding))
+let attackerX
+let attackerY
 let attackerArrX = (attackerColumns * (attackerWidth + attackerHorizontalPadding))
 let attackerArrY = (attackerRows * (attackerHeight + attackerVerticalPadding))
 
 const attackerArr = []
-for (let c = 0; c < attackerColumns; c++) {
-  attackerArr[c] = []
-  for (let r = 0; r < attackerRows; r++) {
-    attackerArr[c][r] = {
+for (let i = 0; i < attackerColumns; i++) {
+  attackerArr[i] = []
+  for (let j = 0; j < attackerRows; j++) {
+    attackerX = i * (attackerWidth + attackerHorizontalPadding) + attackerHorizontalPadding
+    attackerY = j * (attackerHeight + attackerVerticalPadding) + attackerVerticalPadding
+    attackerArr[i][j] = {
       x: 0,
       y: 0,
       status: 1
@@ -71,26 +75,42 @@ const drawBullet = function () {
       ctx.fillRect(bullets[i][0], bullets[i][1], bullets[i][2], bullets[i][3])
     }
   }
-  // ctx.beginPath()
-  // ctx.arc()
-  // ctx.fillStyle = '#000'
-  // ctx.fill()
-  // ctx.closePath()
+}
+
+// set initial x and y variables (called in index.js)
+const assignXAndY = function () {
+  for (let i = 0; i < attackerColumns; i++) {
+    for (let j = 0; j < attackerRows; j++) {
+      attackerX = (i * (attackerWidth + attackerHorizontalPadding)) + attackerHorizontalPadding
+      attackerY = (j * (attackerHeight + attackerVerticalPadding)) + attackerVerticalPadding
+      attackerArr[i][j].x = attackerX
+      attackerArr[i][j].y = attackerY
+    }
+  }
 }
 
 const drawAttackers = function () {
-  for (let c = 0; c < attackerColumns; c++) {
-    for (let r = 0; r < attackerRows; r++) {
-      if (attackerArr[c][r].status === 1) {
-        const attackerX = (c * (attackerWidth + attackerHorizontalPadding)) + attackerHorizontalPadding
-        const attackerY = (r * (attackerHeight + attackerVerticalPadding)) + attackerVerticalPadding
-        attackerArr[c][r].x = attackerX
-        attackerArr[c][r].y = attackerY
+  for (let i = 0; i < attackerColumns; i++) {
+    for (let j = 0; j < attackerRows; j++) {
+      if (attackerArr[i][j].status === 1) {
         ctx.beginPath()
-        ctx.rect(attackerX, attackerY, attackerWidth, attackerHeight)
+        ctx.rect(attackerArr[i][j].x, attackerArr[i][j].y, attackerWidth, attackerHeight)
         ctx.fillStyle = '#000'
         ctx.fill()
         ctx.closePath()
+      }
+    }
+  }
+}
+
+function moveAttackers () {
+  for (let i = 0; i < attackerArr.length; i++) {
+    const currentAttacker = attackerArr[i]
+    for (let j = 0; j < currentAttacker.length; j++) {
+      if (attackerArr[i][j].y < canvas.height + 10) {
+        attackerArr[i][j].y += 1
+      } else if (attackerArr[i][j].y > canvas.height - 1) {
+        attackerArr[i][j].y = -80
       }
     }
   }
@@ -120,6 +140,7 @@ function draw () {
 // connect paddle controls to right and left keys
 document.addEventListener('keydown', keyDownHandler, false)
 document.addEventListener('keyup', keyUpHandler, false)
+
 // connect bullet controls to space bar
 document.addEventListener('keydown', spaceDownHandler, false)
 document.addEventListener('keyup', spaceUpHandler, false)
@@ -166,16 +187,7 @@ function moveBullet () {
   }
 }
 
-function moveAttackers () {
-  for (let i = 0; i < attackerArr.length; i++) {
-    if (attackerArr[i][1] < canvas.height) {
-      attackerArr[i][1] += attackerArr[i][4]
-    } else if (attackerArr[i][1] > canvas.height - 1) {
-      attackerArr[i][1] = -45
-    }
-  }
-}
-
 module.exports = {
-  draw
+  draw,
+  assignXAndY
 }

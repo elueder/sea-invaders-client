@@ -10,6 +10,7 @@ const game = require('./game')
 
 $(() => {
   authEvents.addHandlers()
+  game.assignXAndY()
   game.draw()
 
   // const config = {
