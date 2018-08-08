@@ -196,14 +196,13 @@ function hitAttacker () {
       for (let j = 0; j < attackerRows; j++) {
         const attacker = attackerArr[i][j]
         if (attacker.status === 1) {
-          if (((attacker.x + (attackerWidth / 2) + 1) >= bullets[k][0] &&
-          ((attacker.x - (attackerWidth / 2) + 1) <= bullets[k][0])) &&
+          if (((attacker.x + (attackerWidth / 2) + 6) >= bullets[k][0] &&
+          ((attacker.x - (attackerWidth / 2) - 4) <= bullets[k][0])) &&
           ((attacker.y + (attackerHeight / 2)) >= bullets[k][1]) &&
-          ((attacker.y - (attackerHeight / 2) - 1) <= bullets[k][1])) {
-            console.log('killed coral')
+          ((attacker.y - (attackerHeight / 2) - 4) <= bullets[k][1])) {
             remove = true
-            attacker.status = 0
             score++
+            attacker.status = 0
           }
         }
       }
