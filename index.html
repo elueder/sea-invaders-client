@@ -24,7 +24,7 @@
       <a role="button" data-toggle="modal" href="#sign-up-modal" class="btn btn-default">Sign Up</a>
       <a role="button" data-toggle="modal" href="#sign-in-modal" class="btn btn-default">Sign In</a>
       <a role="button" data-toggle="modal" href="#change-pwd-modal" class="btn btn-default">Change Password</a>
-      <button id="sign-out-button" type="submit" class="btn btn-default">Sign Out</button>
+      <button id="sign-out" class="btn btn-default">Sign Out</button>
     </div>
   </nav>
 
@@ -36,17 +36,17 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">Sign up for Sea Invaders!</h4>
         </div>
-        <div class="modal-body">
-          <form id="sign-up-form" class="form-inline user">
+        <form id="sign-up-form" class="form-inline user">
+          <div class="modal-body">
             <input name="credentials[email]" type="email" placeholder="Email" class="form-control">
             <input name="credentials[password]" type="password" placeholder="Password" class="form-control">
             <input name="credentials[password_confirmation]" type="password" placeholder="Confirm Password" class="form-control">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Sign Up</button>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -59,16 +59,16 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">Sign in</h4>
         </div>
-        <div class="modal-body">
-          <form id="sign-in-form" class="form-inline user">
+        <form id="sign-in-form" class="form-inline user">
+          <div class="modal-body">
             <input name="credentials[email]" type="email" placeholder="Email" class="form-control">
             <input name="credentials[password]" type="password" placeholder="Password" class="form-control">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Sign In</button>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -81,16 +81,16 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">Change Password</h4>
         </div>
-        <div class="modal-body">
-          <form id="change-password-form" class="form-inline">
+        <form id="change-password-form" class="form-inline">
+          <div class="modal-body">
             <input type="password" name="passwords[old]" placeholder="Old Password" class="form-control">
             <input type="password" name="passwords[new]" placeholder="New Password" class="form-control">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
