@@ -23,24 +23,24 @@ const bullets = []
 // create attackers
 const attackerColumns = 6
 const attackerRows = 4
-const attackerHeight = playerHeight / 2
+const attackerHeight = playerHeight / 1.5
 const attackerWidth = playerWidth * 1.3
 const attackerHorizontalPadding = 25
 const attackerVerticalPadding = 5
 const attackerSpeed = 4
 const attackerArrWidth = (attackerColumns * (attackerWidth + attackerHorizontalPadding))
 const attackerArrHeight = (attackerRows * (attackerHeight + attackerVerticalPadding))
+const attacker = new Image()
+attacker.src = 'public/img/coral.png'
 let attackerX
 let attackerY
-let attackerArrX = (attackerColumns * (attackerWidth + attackerHorizontalPadding))
-let attackerArrY = (attackerRows * (attackerHeight + attackerVerticalPadding))
+// let attackerArrX = (attackerColumns * (attackerWidth + attackerHorizontalPadding))
+// let attackerArrY = (attackerRows * (attackerHeight + attackerVerticalPadding))
 
 const attackerArr = []
 for (let i = 0; i < attackerColumns; i++) {
   attackerArr[i] = []
   for (let j = 0; j < attackerRows; j++) {
-    attackerX = i * (attackerWidth + attackerHorizontalPadding) + attackerHorizontalPadding
-    attackerY = j * (attackerHeight + attackerVerticalPadding) + attackerVerticalPadding
     attackerArr[i][j] = {
       x: 0,
       y: 0,
@@ -94,9 +94,9 @@ const drawAttackers = function () {
     for (let j = 0; j < attackerRows; j++) {
       if (attackerArr[i][j].status === 1) {
         ctx.beginPath()
-        ctx.rect(attackerArr[i][j].x, attackerArr[i][j].y, attackerWidth, attackerHeight)
-        ctx.fillStyle = '#000'
-        ctx.fill()
+        // ctx.rect(attackerArr[i][j].x, attackerArr[i][j].y, attackerWidth, attackerHeight)
+        ctx.drawImage(attacker, attackerArr[i][j].x, attackerArr[i][j].y, attackerWidth, attackerHeight)
+        // ctx.fill()
         ctx.closePath()
       }
     }
