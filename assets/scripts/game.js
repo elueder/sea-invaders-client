@@ -4,14 +4,12 @@
 const canvas = document.getElementById('gameboard')
 const ctx = canvas.getContext('2d')
 
-// set gameboard size
-const x = canvas.width / 2
-const y = canvas.height - 20
-
 let score = 0
+let over = false
+let interval
+let currentGameId = 0
 
 // create player (cuttlefish) attributes
-// use cuttlefish images
 const playerHeight = 14
 const playerWidth = 16
 let playerX = (canvas.width - playerWidth) / 2
@@ -27,17 +25,11 @@ const attackerColumns = 6
 const attackerRows = 4
 const attackerHeight = playerHeight / 1.5
 const attackerWidth = playerWidth * 1.3
-const attackerHorizontalPadding = 25
 const attackerVerticalPadding = 5
-const attackerSpeed = 4
-const attackerArrWidth = (attackerColumns * (attackerWidth + attackerHorizontalPadding))
-const attackerArrHeight = (attackerRows * (attackerHeight + attackerVerticalPadding))
 const attacker = new Image()
 attacker.src = 'public/img/coral.png'
 let attackerX
 let attackerY
-// let attackerArrX = (attackerColumns * (attackerWidth + attackerHorizontalPadding))
-// let attackerArrY = (attackerRows * (attackerHeight + attackerVerticalPadding))
 
 const attackerArr = []
 for (let i = 0; i < attackerColumns; i++) {
@@ -51,33 +43,10 @@ for (let i = 0; i < attackerColumns; i++) {
   }
 }
 
-
 // set default values for actions
 let rightPressed = false
 let leftPressed = false
-let spacePressed = false
-
-// set bullet speed
-const numOfMilliseconds = 5000
-
-// create player
-const drawPlayer = function () {
-  ctx.beginPath()
-  ctx.rect(playerX, canvas.height - playerHeight, playerWidth, playerHeight)
-  ctx.drawImage(playerImg, playerX, canvas.height - playerHeight, playerWidth, playerHeight)
-  ctx.closePath()
-}
-
-// create bullets
-const drawBullet = function () {
-  if (bullets.length) {
-    for (let i = 0; i < bullets.length; i++) {
-      ctx.fillStyle = '#000'
-      ctx.fill()
-      ctx.fillRect(bullets[i][0], bullets[i][1], bullets[i][2], bullets[i][3])
-    }
-  }
-}
+let upPressed = false
 
 // set initial x and y variables (called in index.js)
 const assignXAndY = function () {
@@ -91,7 +60,56 @@ const assignXAndY = function () {
   }
 }
 
-const drawAttackers = function () {
+// creates everything for game
+function draw (loopId) {
+  // clear canvas on every frame
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  drawScore()
+  drawPlayer()
+  moveBullet()
+  hitAttacker()
+  hitPlayer()
+  checkForGameOver()
+  drawAttackers()
+  moveAttackers()
+  drawBullet()
+
+  // move player
+  if (rightPressed && playerX < canvas.width - playerWidth) {
+    playerX += 2
+  } else if (leftPressed && playerX > 0) {
+    playerX -= 2
+  }
+
+  if (loopId === currentGameId) {
+    requestAnimationFrame(() => {
+      draw(loopId)
+    })
+  }
+}
+
+// create player in middle of screen
+function drawPlayer () {
+  ctx.beginPath()
+  ctx.rect(playerX, canvas.height - playerHeight, playerWidth, playerHeight)
+  ctx.drawImage(playerImg, playerX, canvas.height - playerHeight, playerWidth, playerHeight)
+  ctx.closePath()
+}
+
+// create bullets for player to shoot
+function drawBullet () {
+  if (bullets.length) {
+    for (let i = 0; i < bullets.length; i++) {
+      ctx.fillStyle = '#000'
+      ctx.fill()
+      ctx.fillRect(bullets[i][0], bullets[i][1], bullets[i][2], bullets[i][3])
+    }
+  }
+}
+
+// ATTACKER FUNCTIONS
+// create images that will be the attackers
+function drawAttackers () {
   for (let i = 0; i < attackerColumns; i++) {
     for (let j = 0; j < attackerRows; j++) {
       if (attackerArr[i][j].status === 1) {
@@ -103,6 +121,7 @@ const drawAttackers = function () {
   }
 }
 
+// move the attackers down the screen
 function moveAttackers () {
   for (let i = 0; i < attackerArr.length; i++) {
     const currentAttacker = attackerArr[i]
@@ -117,28 +136,6 @@ function moveAttackers () {
   }
 }
 
-// creates everything for game
-function draw () {
-  // clear canvas on every frame
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  drawPlayer()
-  moveBullet()
-  // NEED COLLISION DETECTION BEFORE drawAttackers()
-  hitAttacker()
-  drawAttackers()
-  moveAttackers()
-  drawBullet()
-
-  // move player
-  if (rightPressed && playerX < canvas.width - playerWidth) {
-    playerX += 2
-  } else if (leftPressed && playerX > 0) {
-    playerX -= 2
-  }
-
-  requestAnimationFrame(draw)
-}
-
 // connect paddle controls to right and left keys
 document.addEventListener('keydown', keyDownHandler, false)
 document.addEventListener('keyup', keyUpHandler, false)
@@ -147,7 +144,7 @@ document.addEventListener('keyup', keyUpHandler, false)
 document.addEventListener('keydown', spaceDownHandler, false)
 document.addEventListener('keyup', spaceUpHandler, false)
 
-// event handler for right & left keys
+// event handler for right & left keys to move player right and left on same y-axis
 function keyDownHandler (e) {
   if (e.keyCode === 39) {
     rightPressed = true
@@ -156,7 +153,7 @@ function keyDownHandler (e) {
   }
 }
 
-// event handler for right & left keys
+// event handler for releasing right & left keys
 function keyUpHandler (e) {
   if (e.keyCode === 39) {
     rightPressed = false
@@ -165,20 +162,21 @@ function keyUpHandler (e) {
   }
 }
 
-// event handler for space bar
+// event handlers for space bar
 function spaceDownHandler (e) {
-  if (e.keyCode === 32 && bullets.length <= bulletTotal) {
+  if (e.keyCode === 70 && bullets.length <= bulletTotal) {
     bullets.push([playerX + 7, canvas.height - 8, 2, 5])
-    spacePressed = true
+    upPressed = true
   }
 }
 
 function spaceUpHandler (e) {
-  if (e.keyCode === 32) {
-    spacePressed = false
+  if (e.keyCode === 70) {
+    upPressed = false
   }
 }
 
+// shoot bullet from middle of player
 function moveBullet () {
   for (let i = 0; i < bullets.length; i++) {
     if (bullets[i][1] > -11) {
@@ -189,13 +187,17 @@ function moveBullet () {
   }
 }
 
+// check if bullet x-axis and y-axis match attacker
 function hitAttacker () {
   let remove = false
+  // cycle through active bullets
   for (let k = 0; k < bullets.length; k++) {
+    // cycle through 2d array of attackers
     for (let i = 0; i < attackerColumns; i++) {
       for (let j = 0; j < attackerRows; j++) {
         const attacker = attackerArr[i][j]
         if (attacker.status === 1) {
+          // allow for margin of error around center of attacker + half of width on either side
           if (((attacker.x + (attackerWidth / 2) + 6) >= bullets[k][0] &&
           ((attacker.x - (attackerWidth / 2) - 4) <= bullets[k][0])) &&
           ((attacker.y + (attackerHeight / 2)) >= bullets[k][1]) &&
@@ -207,13 +209,71 @@ function hitAttacker () {
         }
       }
     }
+    // prevents error
     if (remove === true) {
       bullets.splice(k, 1)
     }
   }
 }
 
+// check if attacker has hit the player -> check moving x-axis and fixed y-axis (player only moves side-to-side)
+function hitPlayer () {
+  for (let i = 0; i < attackerColumns; i++) {
+    for (let j = 0; j < attackerRows; j++) {
+      const attacker = attackerArr[i][j]
+      // check if attacker is `active`
+      if (attacker.status === 1) {
+        // match x and y coordinates
+        if (attacker.y === 123 &&
+          (attacker.x + (attackerWidth / 2) >= playerX - (playerWidth / 2) &&
+          (attacker.x - (attackerWidth / 2) <= playerX + (playerWidth / 2)))) {
+          over = true
+        }
+      }
+    }
+  }
+}
+
+// write score in the corner
+function drawScore () {
+  ctx.font = '16px Arial'
+  ctx.fillStyle = 'black'
+  ctx.fillText(`Score: ${score}`, 15, 20)
+}
+
+// right now only have one life; if multiple lives, check if lives < 0
+function checkForGameOver () {
+  if (over === true) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.font = '32px Arial'
+    ctx.fillStyle = 'black'
+    ctx.fillText('GAME OVER', 55, 75)
+    for (let i = 0; i < attackerColumns; i++) {
+      for (let j = 0; j < attackerRows; j++) {
+        const attacker = attackerArr[i][j]
+        attacker.status = 0
+      }
+    }
+  }
+}
+
+// on button click, run these functions to set game variables and start drawing
+function startGame () {
+  for (let i = 0; i < attackerColumns; i++) {
+    for (let j = 0; j < attackerRows; j++) {
+      const attacker = attackerArr[i][j]
+      attacker.status = 1
+    }
+  }
+  currentGameId += 1
+  // clearInterval(interval)
+  // interval = setInterval(moveAttackers, 200)
+  over = false
+  score = 0
+  assignXAndY()
+  draw(currentGameId)
+}
+
 module.exports = {
-  draw,
-  assignXAndY
+  startGame
 }
