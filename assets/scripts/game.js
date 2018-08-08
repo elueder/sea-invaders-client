@@ -8,6 +8,8 @@ const ctx = canvas.getContext('2d')
 const x = canvas.width / 2
 const y = canvas.height - 20
 
+let score = 0
+
 // create player (cuttlefish) attributes
 // use cuttlefish images
 const playerHeight = 14
@@ -81,7 +83,7 @@ const drawBullet = function () {
 const assignXAndY = function () {
   for (let i = 0; i < attackerColumns; i++) {
     for (let j = 0; j < attackerRows; j++) {
-      attackerX = (i * (attackerWidth + attackerHorizontalPadding)) + attackerHorizontalPadding
+      attackerX = (Math.random() * canvas.width) + 1
       attackerY = (j * (attackerHeight + attackerVerticalPadding)) + attackerVerticalPadding
       attackerArr[i][j].x = attackerX
       attackerArr[i][j].y = attackerY
@@ -94,9 +96,7 @@ const drawAttackers = function () {
     for (let j = 0; j < attackerRows; j++) {
       if (attackerArr[i][j].status === 1) {
         ctx.beginPath()
-        // ctx.rect(attackerArr[i][j].x, attackerArr[i][j].y, attackerWidth, attackerHeight)
         ctx.drawImage(attacker, attackerArr[i][j].x, attackerArr[i][j].y, attackerWidth, attackerHeight)
-        // ctx.fill()
         ctx.closePath()
       }
     }
@@ -110,6 +110,7 @@ function moveAttackers () {
       if (attackerArr[i][j].y < canvas.height + 10) {
         attackerArr[i][j].y += 1
       } else if (attackerArr[i][j].y > canvas.height - 1) {
+        attackerArr[i][j].x = (Math.random() * canvas.width) + 1
         attackerArr[i][j].y = -80
       }
     }
@@ -123,6 +124,7 @@ function draw () {
   drawPlayer()
   moveBullet()
   // NEED COLLISION DETECTION BEFORE drawAttackers()
+  hitAttacker()
   drawAttackers()
   moveAttackers()
   drawBullet()
@@ -183,6 +185,31 @@ function moveBullet () {
       bullets[i][1] -= 5
     } else if (bullets[i][1] < -10) {
       bullets.splice(i, 1)
+    }
+  }
+}
+
+function hitAttacker () {
+  let remove = false
+  for (let k = 0; k < bullets.length; k++) {
+    for (let i = 0; i < attackerColumns; i++) {
+      for (let j = 0; j < attackerRows; j++) {
+        const attacker = attackerArr[i][j]
+        if (attacker.status === 1) {
+          if (((attacker.x + (attackerWidth / 2) + 1) >= bullets[k][0] &&
+          ((attacker.x - (attackerWidth / 2) + 1) <= bullets[k][0])) &&
+          ((attacker.y + (attackerHeight / 2)) >= bullets[k][1]) &&
+          ((attacker.y - (attackerHeight / 2) - 1) <= bullets[k][1])) {
+            console.log('killed coral')
+            remove = true
+            attacker.status = 0
+            score++
+          }
+        }
+      }
+    }
+    if (remove === true) {
+      bullets.splice(k, 1)
     }
   }
 }
