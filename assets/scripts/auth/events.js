@@ -6,6 +6,7 @@ const authUi = require('./ui')
 // const authApi = require('./api')
 
 const onSignUp = function (event) {
+  console.log('hitting onSignUp')
   event.preventDefault()
   const data = getFormFields(event.target)
   authApi.signUp(data)
@@ -36,14 +37,13 @@ const onSignOut = function (event) {
   authApi.signOut(data)
     .then(authUi.signOutSuccess)
     .catch(authUi.signOutFail)
-  authUi.signedOutState()
 }
 
 const addHandlers = () => {
   $('#sign-up-form').on('submit', onSignUp)
   $('#sign-in-form').on('submit', onSignIn)
   $('#change-password-form').on('submit', onChangePassword)
-  $('#sign-out').on('submit', onSignOut)
+  $('#sign-out').on('click', onSignOut)
 }
 
 module.exports = {
