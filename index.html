@@ -20,7 +20,7 @@
       <h1>Sea Invaders</h1>
     </div>
     <div class="nav-buttons">
-      <a role="button" data-toggle="modal" href="#leaderboard-modal" class="btn btn-default">Leaderboard</a>
+      <a role="button" data-toggle="modal" href="#game-stats-modal" class="btn btn-default">Your Game Stats!</a>
       <a role="button" data-toggle="modal" href="#sign-up-modal" class="btn btn-default">Sign Up</a>
       <a role="button" data-toggle="modal" href="#sign-in-modal" class="btn btn-default">Sign In</a>
       <a role="button" data-toggle="modal" href="#change-pwd-modal" class="btn btn-default">Change Password</a>
@@ -96,17 +96,15 @@
   </div>
 
 
-  <!-- LEADERBOARD MODAL -->
-  <div id="leaderboard-modal" class="modal fade" tabindex="-1" role="dialog">
+  <!-- GAME STATS MODAL -->
+  <div id="game-stats-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Leaderboard</h4>
+          <h4 class="modal-title">Your Game Stats</h4>
         </div>
-        <div class="modal-body">
-          <p>Top 10 Sea Invaders</p>
-        </div>
+        <div class="modal-body" id="game-stats-body"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
