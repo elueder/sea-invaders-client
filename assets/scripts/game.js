@@ -1,12 +1,15 @@
 'use strict'
 
+const store = require('./store')
+const gameEvents = require('./game-api/events')
+
 // use canvas
 const canvas = document.getElementById('gameboard')
 const ctx = canvas.getContext('2d')
 
-let score = 0
-let over = false
-let won = false
+store.score = 0
+store.over = false
+store.won = false
 let interval
 let currentGameId = 0
 
@@ -165,14 +168,14 @@ function keyUpHandler (e) {
 
 // event handlers for space bar -> switch to F key
 function spaceDownHandler (e) {
-  if (e.keyCode === 70 && bullets.length <= bulletTotal && over === false) {
+  if (e.keyCode === 70 && bullets.length <= bulletTotal && store.over === false) {
     bullets.push([playerX + 7, canvas.height - 8, 2, 5])
     fPressed = true
   }
 }
 
 function spaceUpHandler (e) {
-  if (e.keyCode === 70 && over === false) {
+  if (e.keyCode === 70 && store.over === false) {
     fPressed = false
   }
 }
@@ -204,10 +207,10 @@ function hitAttacker () {
           ((attacker.y + (attackerHeight / 2)) >= bullets[k][1]) &&
           ((attacker.y - (attackerHeight / 2) - 4) <= bullets[k][1])) {
             remove = true
-            score++
+            store.score++
             attacker.status = 0
-            if (score === (attackerRows * attackerColumns)) {
-              won = true
+            if (store.score === (attackerRows * attackerColumns)) {
+              store.won = true
             }
           }
         }
@@ -231,7 +234,7 @@ function hitPlayer () {
         if ((attacker.y >= 127 && attacker.y <= 130) &&
           (attacker.x + (attackerWidth / 2) >= playerX - (playerWidth / 2) &&
           (attacker.x - (attackerWidth / 2) <= playerX + (playerWidth / 2)))) {
-          over = true
+          store.over = true
         }
       }
     }
@@ -242,22 +245,24 @@ function hitPlayer () {
 function drawScore () {
   ctx.font = '16px Arial'
   ctx.fillStyle = 'black'
-  ctx.fillText(`Score: ${score}`, 15, 20)
+  ctx.fillText(`Score: ${store.score}`, 15, 20)
 }
 
 // right now only have one life; if multiple lives, check if lives < 0
 function checkForGameOver (e) {
-  if (won === true) {
-    over = true
+  if (store.won === true) {
+    store.over = true
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.font = '32px Arial'
     ctx.fillStyle = 'black'
     ctx.fillText('YOU WIN!!', 55, 75)
-  } else if (over === true) {
+    gameEvents.onUpdateGame()
+  } else if (store.over === true) {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.font = '32px Arial'
     ctx.fillStyle = 'black'
     ctx.fillText('GAME OVER', 55, 75)
+    gameEvents.onUpdateGame()
     for (let i = 0; i < attackerColumns; i++) {
       for (let j = 0; j < attackerRows; j++) {
         const attacker = attackerArr[i][j]
@@ -278,9 +283,10 @@ function startGame () {
   currentGameId += 1
   // clearInterval(interval)
   // interval = setInterval(moveAttackers, 200)
-  over = false
-  won = false
-  score = 0
+  store.over = false
+  store.won = false
+  store.score = 0
+  gameEvents.onCreateGame()
   assignXAndY()
   draw(currentGameId)
 }
