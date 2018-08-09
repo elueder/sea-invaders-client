@@ -47,7 +47,7 @@ for (let i = 0; i < attackerColumns; i++) {
 // set default values for actions
 let rightPressed = false
 let leftPressed = false
-let upPressed = false
+let fPressed = false
 
 // set initial x and y variables (called in index.js)
 const assignXAndY = function () {
@@ -66,10 +66,10 @@ function draw (loopId) {
   // clear canvas on every frame
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   drawScore()
-  drawPlayer()
   moveBullet()
   hitAttacker()
   hitPlayer()
+  drawPlayer()
   checkForGameOver()
   drawAttackers()
   moveAttackers()
@@ -163,17 +163,17 @@ function keyUpHandler (e) {
   }
 }
 
-// event handlers for space bar
+// event handlers for space bar -> switch to F key
 function spaceDownHandler (e) {
-  if (e.keyCode === 70 && bullets.length <= bulletTotal) {
+  if (e.keyCode === 70 && bullets.length <= bulletTotal && over === false) {
     bullets.push([playerX + 7, canvas.height - 8, 2, 5])
-    upPressed = true
+    fPressed = true
   }
 }
 
 function spaceUpHandler (e) {
-  if (e.keyCode === 70) {
-    upPressed = false
+  if (e.keyCode === 70 && over === false) {
+    fPressed = false
   }
 }
 
@@ -246,7 +246,7 @@ function drawScore () {
 }
 
 // right now only have one life; if multiple lives, check if lives < 0
-function checkForGameOver () {
+function checkForGameOver (e) {
   if (won === true) {
     over = true
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -279,6 +279,7 @@ function startGame () {
   // clearInterval(interval)
   // interval = setInterval(moveAttackers, 200)
   over = false
+  won = false
   score = 0
   assignXAndY()
   draw(currentGameId)
