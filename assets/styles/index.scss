@@ -1,9 +1,10 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 
-$gameboard-color: rgba(208, 212, 219, 0.5);
+$gameboard-color: rgba(208, 212, 219, 0.6);
 
 body {
+  align-items: center;
   background-image: url('../../public/img/UnderwaterBGBlank.png');
 }
 
@@ -11,9 +12,10 @@ canvas {
   background-color: $gameboard-color;
   border: solid #fff 5px;
   display: block;
+  // float:
   height: 360px;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 50px;
   width: 520px;
 }
 
@@ -30,6 +32,11 @@ h1 {
   padding: 10px;
 }
 
+h3 {
+  margin: 4px;
+  font-size: 22px;
+}
+
 button {
   margin-top: 4px;
   // padding: 5px;
@@ -43,4 +50,27 @@ button {
 .nav-buttons {
   float: right;
   margin-right: 4px;
+}
+
+.container {
+  // align-items: center;
+  text-align: center;
+}
+
+.btn-lg {
+  margin-top: 25px;
+}
+
+#user-instructions {
+  color: black;
+  text-align: left;
+  background-color: $gameboard-color;
+  margin: auto;
+  margin-top: 20px;
+  padding: 5px;
+  width: 520px;
+}
+
+.ul {
+  font-size: 28px;
 }

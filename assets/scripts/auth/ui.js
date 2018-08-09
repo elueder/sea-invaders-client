@@ -2,101 +2,74 @@
 
 const store = require('../store')
 
-const signUpSuccess = function (signUpResponse) {
-  store.token = signUpResponse.user.token
-  $('#user-messages').html('')
-  $('.content').html('')
-  $('#user-messages').html(`
-    <div class="alert alert-success alert-dismissable">
-    <button type="button" class="close" aria-hidden="true" data-dismiss="alert">&times;</button>
-    Signed up! Please sign in.</div>
-    `)
+const clearContents = function () {
+  $('input').val('')
+  $('#sign-up-modal-body, #sign-in-modal-body, #change-pwd-modal-body, #game-stats-body, #msg-container').html('')
   document.getElementById('sign-up-form').reset()
   document.getElementById('sign-in-form').reset()
   document.getElementById('change-password-form').reset()
 }
 
+const signUpSuccess = function (signUpResponse) {
+  store.token = signUpResponse.user.token
+  $('#sign-up-modal').modal('hide')
+  signedInState()
+  clearContents()
+}
+
 const signUpError = function () {
-  $('#user-messages').html('')
-  $('.content').html('')
-  $('#user-messages').html(`<div class="alert alert-warning">
-    <button type="button" class="close" aria-hidden="true" data-dismiss="alert">&times;</button>
-    Error signing up. Please try again.
-    </div>`)
-  document.getElementById('sign-up-form').reset()
-  document.getElementById('sign-in-form').reset()
-  document.getElementById('change-password-form').reset()
+  signedOutState()
+  $('#sign-up-modal-body').html(`<p>Error signing up. Please try again.</p>`)
 }
 
 const signInSuccess = function (signInResponse) {
   store.token = signInResponse.user.token
-  $('#user-messages').html('')
-  $('.content').html('')
-  $('#user-messages').html('')
-  document.getElementById('sign-up-form').reset()
-  document.getElementById('sign-in-form').reset()
-  document.getElementById('change-password-form').reset()
+  $('#sign-in-modal').modal('hide')
+  signedInState()
+  clearContents()
 }
 
 const signInError = function () {
-  $('#user-messages').html('')
-  $('.content').html('')
-  $('#user-messages').html(`<div class="alert alert-warning">
-    <button type="button" class="close" aria-hidden="true" data-dismiss="alert">&times;</button>
-    Error signing in. Please try again.
-    </div>`)
-  document.getElementById('sign-up-form').reset()
-  document.getElementById('sign-in-form').reset()
-  document.getElementById('change-password-form').reset()
+  clearContents()
+  signedOutState()
+  $('#sign-in-modal-body').html(`<p>Error signing in. Please try again.</p>`)
 }
 
 const signOutSuccess = function (signOutResponse) {
-  $('#user-messages').html('')
-  $('.content').html('')
-  $('#user-messages').html('')
-  document.getElementById('sign-up-form').reset()
-  document.getElementById('sign-in-form').reset()
-  document.getElementById('change-password-form').reset()
+  clearContents()
+  signedOutState()
 }
 
 const signOutError = function (signOutResponse) {
-  $('#user-messages').html('')
-  $('.content').html('')
-  $('#user-messages').html(`<div class="alert alert-warning">
-    <button type="button" class="close" aria-hidden="true" data-dismiss="alert">&times;</button>
-    Error signing out. Please try again.
-    </div>`)
-  document.getElementById('sign-up-form').reset()
-  document.getElementById('sign-in-form').reset()
-  document.getElementById('change-password-form').reset()
+  $('#user-messages').html(`<p>Error signing out. Please try again.</p>`)
+  clearContents()
 }
 
 const changePasswordSuccess = function () {
-  $('#user-messages').html('')
-  $('.content').html('')
-  $('#user-messages').html(`
-    <div class="alert alert-success alert-dismissable">
-    <button type="button" class="close" aria-hidden="true" data-dismiss="alert">&times;</button>
-    Password changed!</div>
-    `)
-  document.getElementById('sign-up-form').reset()
-  document.getElementById('sign-in-form').reset()
-  document.getElementById('change-password-form').reset()
+  $('#change-pwd-modal').modal('hide')
+  clearContents()
 }
 
 const changePasswordError = function () {
-  $('#user-messages').html('')
-  $('.content').html('')
-  $('#user-messages').html(`<div class="alert alert-warning">
-    <button type="button" class="close" aria-hidden="true" data-dismiss="alert">&times;</button>
-    Error changing password. Please try again.
-    </div>`)
-  document.getElementById('sign-up-form').reset()
-  document.getElementById('sign-in-form').reset()
-  document.getElementById('change-password-form').reset()
+  clearContents()
+  $('#change-pwd-modal-body').html(`<p>Error changing password. Please try again.</p>`)
+}
+
+const signedInState = function () {
+  $('#msg-container').html('')
+  $('#game-stats-body').html('')
+  $('#open-game-stats, #sign-out, #change-pwd-button, #sign-out').removeClass('hidden')
+  $('#sign-up-button, #sign-in-button, #signed-out-message').addClass('hidden')
+}
+
+const signedOutState = function () {
+  $('#msg-container').html('Sign in to save your games, or just play for fun!')
+  $('#sign-up-button, #sign-in-button, #signed-out-message').removeClass('hidden')
+  $('#open-game-stats, #sign-out, #change-pwd-button, #sign-out').addClass('hidden')
 }
 
 module.exports = {
+  clearContents,
   signUpSuccess,
   signUpError,
   signInSuccess,
@@ -104,5 +77,7 @@ module.exports = {
   signOutSuccess,
   signOutError,
   changePasswordSuccess,
-  changePasswordError
+  changePasswordError,
+  signedInState,
+  signedOutState
 }

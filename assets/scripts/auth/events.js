@@ -3,12 +3,12 @@
 const getFormFields = require('../../../lib/get-form-fields')
 const authApi = require('./api')
 const authUi = require('./ui')
-// const authApi = require('./api')
 
 const onSignUp = function (event) {
   event.preventDefault()
   const data = getFormFields(event.target)
   authApi.signUp(data)
+    .then(() => { return authApi.signIn(data) })
     .then(authUi.signUpSuccess)
     .catch(authUi.signUpError)
 }

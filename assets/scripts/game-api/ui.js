@@ -3,61 +3,37 @@
 const store = require('../store')
 
 const getGamesSuccess = function (data) {
-  $('#msg-container').html('')
-  $('#content').html('')
   let totalCount = 0
   let winCount = 0
-  data.games.forEach(function () {
+  data.games.forEach(function (game) {
     totalCount += 1
   })
-  data.games.forEach((game) => {
+  data.games.forEach(function (game) {
     if (game.won === true) {
       winCount += 1
     }
   })
-  $('#game-stats-body').html(`
-    <div class="alert alert-success alert-dismissable">
-    <button type="button" class="close" aria-hidden="true" data-dismiss="alert">&times;</button>
-    You've won ${winCount} out of ${totalCount}!</div>
-    `)
-  document.getElementById('change-password-form').reset()
+  if (totalCount === 0) {
+    $('#game-stats-body').html(`<p>You haven't played any games yet!</p>`)
+  } else {
+    $('#game-stats-body').html(`<p>You've won ${winCount} out of ${totalCount}!</p>`)
+  }
 }
 
 const getGamesFail = function () {
-  $('#msg-container').html('')
-  // $('#content').html('')
-  $('#msg-container').html(`
-    <div class="alert alert-warning alert-dismissable">
-    <button type="button" class="close" aria-hidden="true" data-dismiss="alert">&times;</button>
-    We can't count today!</div>
-  `)
-  document.getElementById('change-password-form').reset()
+  $('#game-stats-body').html(`<p>We can't count today!</p>`)
 }
 
 const createGameSuccess = function (data) {
-  $('#msg-container').html('')
   store.game = data.game
-  $('#msg-container').html(`
-    <div class="alert alert-success alert-dismissable">
-    <button type="button" class="close" aria-hidden="true" data-dismiss="alert">&times;</button>
-    New Game Started!</div>
-    `)
-  document.getElementById('change-password-form').reset()
-  gameState()
 }
 
 const createGameFail = function () {
-  $('#msg-container').html('')
-  // $('#content').html('')
-  $('#msg-container').html(`
-    <div class="alert alert-warning">Server Error.</div>
-  `)
-  document.getElementById('change-password-form').reset()
-}
-
-const gameState = function () {
-  $('#game-board, #home').removeClass('hidden')
-  $('#sign-up-form, #sign-in-form').addClass('hidden')
+  if (store.token) {
+    $('#msg-container').html(`Couldn't create game. Please try again.`)
+  } else {
+    $('#msg-container').html('Sign in to save your games, or just play for fun!')
+  }
 }
 
 module.exports = {

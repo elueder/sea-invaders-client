@@ -3,10 +3,9 @@
 const api = require('./api.js')
 const ui = require('./ui.js')
 const store = require('../store')
-// const game = require('../game')
 
 const addHandlers = function () {
-  $('#game-stats-modal').on('click', onGetGames)
+  $('#open-game-stats').on('click', onGetGames)
 }
 
 const onGetGames = function () {
@@ -17,7 +16,6 @@ const onGetGames = function () {
 }
 
 const onCreateGame = function () {
-  // event.preventDefault()
   const data = {
     game: {
       score: store.score,
@@ -31,7 +29,6 @@ const onCreateGame = function () {
 }
 
 const onUpdateGame = function () {
-  // event.preventDefault()
   const data = {
     game: {
       score: store.score,
