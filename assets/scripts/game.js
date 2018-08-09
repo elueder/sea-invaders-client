@@ -276,6 +276,7 @@ function checkForGameOver (e) {
 
 // on button click, run these functions to set game variables and start drawing
 function startGame () {
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
   for (let i = 0; i < attackerColumns; i++) {
     for (let j = 0; j < attackerRows; j++) {
       const attacker = attackerArr[i][j]
