@@ -6,6 +6,7 @@ const ctx = canvas.getContext('2d')
 
 let score = 0
 let over = false
+let won = false
 let interval
 let currentGameId = 0
 
@@ -205,6 +206,9 @@ function hitAttacker () {
             remove = true
             score++
             attacker.status = 0
+            if (score === (attackerRows * attackerColumns)) {
+              won = true
+            }
           }
         }
       }
@@ -224,7 +228,7 @@ function hitPlayer () {
       // check if attacker is `active`
       if (attacker.status === 1) {
         // match x and y coordinates
-        if (attacker.y === 123 &&
+        if ((attacker.y >= 127 && attacker.y <= 130) &&
           (attacker.x + (attackerWidth / 2) >= playerX - (playerWidth / 2) &&
           (attacker.x - (attackerWidth / 2) <= playerX + (playerWidth / 2)))) {
           over = true
@@ -243,7 +247,13 @@ function drawScore () {
 
 // right now only have one life; if multiple lives, check if lives < 0
 function checkForGameOver () {
-  if (over === true) {
+  if (won === true) {
+    over = true
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.font = '32px Arial'
+    ctx.fillStyle = 'black'
+    ctx.fillText('YOU WIN!!', 55, 75)
+  } else if (over === true) {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.font = '32px Arial'
     ctx.fillStyle = 'black'
