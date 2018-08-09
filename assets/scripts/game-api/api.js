@@ -23,16 +23,6 @@ const createGame = function (data) {
   })
 }
 
-const getGame = function (data) {
-  return $.ajax({
-    method: 'GET',
-    url: config.apiUrl + '/games/' + data.game.id,
-    headers: {
-      Authorization: 'Token token=' + store.token
-    }
-  })
-}
-
 const updateGame = function (data) {
   return $.ajax({
     method: 'PATCH',
@@ -47,6 +37,5 @@ const updateGame = function (data) {
 module.exports = {
   getGames,
   createGame,
-  getGame,
   updateGame
 }
