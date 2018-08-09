@@ -1,10 +1,11 @@
 'use strict'
 
 const store = require('../store')
+const game = require('../game')
 
 const clearContents = function () {
   $('input').val('')
-  $('#sign-up-modal-body, #sign-in-modal-body, #change-pwd-modal-body, #game-stats-body, #msg-container').html('')
+  $('#sign-up-modal-body, #sign-in-modal-body, #change-pwd-modal-body, #game-stats-body').html('')
   document.getElementById('sign-up-form').reset()
   document.getElementById('sign-in-form').reset()
   document.getElementById('change-password-form').reset()
@@ -63,6 +64,7 @@ const signedInState = function () {
 }
 
 const signedOutState = function () {
+  game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height)
   $('#msg-container').html('Sign in to save your games, or just play for fun!')
   $('#sign-up-button, #sign-in-button, #signed-out-message').removeClass('hidden')
   $('#open-game-stats, #sign-out, #change-pwd-button, #sign-out').addClass('hidden')

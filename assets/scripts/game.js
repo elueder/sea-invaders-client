@@ -294,5 +294,7 @@ function startGame () {
 }
 
 module.exports = {
-  startGame
+  startGame,
+  ctx,
+  canvas
 }
