@@ -58,6 +58,7 @@ const changePasswordError = function () {
 
 const signedInState = function () {
   $('#msg-container').html('')
+  game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height)
   $('#game-stats-body').html('')
   $('#open-game-stats, #sign-out, #change-pwd-button, #sign-out').removeClass('hidden')
   $('#sign-up-button, #sign-in-button, #signed-out-message').addClass('hidden')
