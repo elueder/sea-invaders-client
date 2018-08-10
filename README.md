@@ -7,8 +7,8 @@ This is a single-player shooter game. The player (a cuttlefish) shoots at attack
 - https://github.com/elueder/sea-invaders-api
 
 ## Game and API
-Game: https://elueder.github.io/sea-invaders-client/
-API: https://dashboard.heroku.com/apps/pure-forest-62868
+- Game: https://elueder.github.io/sea-invaders-client/
+- API: https://dashboard.heroku.com/apps/pure-forest-62868
 
 ## Technologies Used
 - HTML5
