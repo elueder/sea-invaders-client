@@ -256,14 +256,18 @@ function checkForGameOver (e) {
     ctx.font = '32px Arial'
     ctx.fillStyle = 'black'
     ctx.fillText('YOU WIN!!', 55, 75)
-    gameEvents.onUpdateGame()
+    if (store.token) {
+      gameEvents.onUpdateGame()
+    }
     currentGameId += 1
   } else if (store.over === true) {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.font = '32px Arial'
     ctx.fillStyle = 'black'
     ctx.fillText('GAME OVER', 55, 75)
-    gameEvents.onUpdateGame()
+    if (store.token) {
+      gameEvents.onUpdateGame()
+    }
     for (let i = 0; i < attackerColumns; i++) {
       for (let j = 0; j < attackerRows; j++) {
         const attacker = attackerArr[i][j]
@@ -289,7 +293,9 @@ function startGame () {
   store.over = false
   store.won = false
   store.score = 0
-  gameEvents.onCreateGame()
+  if (store.token) {
+    gameEvents.onCreateGame()
+  }
   assignXAndY()
   draw(currentGameId)
 }
