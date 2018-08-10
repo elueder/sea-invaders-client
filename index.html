@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Sea Invaders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Do not add `link` tags-->
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Do not add `script` tags-->
+  <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
+  <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-header">
+      <h1>Sea Invaders</h1>
+    </div>
+    <div class="nav-buttons">
+      <a role="button" data-toggle="modal" href="#game-stats-modal" class="btn btn-default content-button hidden" id="open-game-stats">Your Game Stats!</a>
+      <a role="button" data-toggle="modal" href="#sign-up-modal" class="btn btn-default content-button" id="sign-up-button">Sign Up</a>
+      <a role="button" data-toggle="modal" href="#sign-in-modal" class="btn btn-default content-button" id="sign-in-button">Sign In</a>
+      <a role="button" data-toggle="modal" href="#change-pwd-modal" class="btn btn-default content-button hidden" id="change-pwd-button">Change Password</a>
+      <button id="sign-out" class="btn btn-default hidden">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- SIGN UP MODAL -->
+  <div id="sign-up-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Sign up for Sea Invaders!</h4>
+        </div>
+        <form id="sign-up-form" class="form-inline user">
+          <div class="modal-body">
+            <input name="credentials[email]" type="email" placeholder="Email" class="form-control">
+            <input name="credentials[password]" type="password" placeholder="Password" class="form-control">
+            <input name="credentials[password_confirmation]" type="password" placeholder="Confirm Password" class="form-control">
+            <div id="sign-up-modal-body"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default content-button" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary submit-button">Sign Up</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGN IN MODAL -->
+  <div id="sign-in-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Sign in</h4>
+        </div>
+        <form id="sign-in-form" class="form-inline user">
+          <div class="modal-body">
+            <input name="credentials[email]" type="email" placeholder="Email" class="form-control">
+            <input name="credentials[password]" type="password" placeholder="Password" class="form-control">
+            <div id="sign-in-modal-body"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default content-button" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary submit-button">Sign In</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHANGE PWD MODAL -->
+  <div id="change-pwd-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Change Password</h4>
+        </div>
+        <form id="change-password-form" class="form-inline">
+          <div class="modal-body">
+            <input type="password" name="passwords[old]" placeholder="Old Password" class="form-control">
+            <input type="password" name="passwords[new]" placeholder="New Password" class="form-control">
+            <div id="change-pwd-modal-body"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default content-button" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary submit-button">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- GAME STATS MODAL -->
+  <div id="game-stats-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Your Game Stats</h4>
+        </div>
+        <div class="modal-body" id="game-stats-body"></div>
+        <div class="modal-footer">
+          <button class="btn btn-default content-button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <button id="start-game" class="btn btn-default btn-lg">Start Game!</button>
+    <canvas id="gameboard"></canvas>
+    <div id="user-instructions">
+      <h3 id="msg-container">Sign in to save your games, or just play for fun!</h3>
+      <h3>Instructions:</h3>
+      <ul>
+        <li>Use the right and left arrow keys to move your cuttlefish</li>
+        <li>Hit 'F' to shoot</li>
+        <li>If you hit all 24 pieces of coral, you win!</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- <script src="./assets/scripts/game.js"></script> -->
+</body>
+
+</html>
